@@ -57,7 +57,7 @@ paste("Correlation for Body_Fat and Age: ", round(cor(Body_fat, Age),2))
 paste("Correlation for Body_Fat and Chest_circumstances: ", round(cor(Body_fat, Chest_circumference),2))
 paste("Correlation for Body_Fat and Density: ", round(cor(Body_fat, Density),2))
 paste("Correlation for Body_Fat and Knee_circumference ", round(cor(Body_fat, Knee_circumference),2))
-paste("Correlation for Body_Fat and Weight: ", round(cor(Body_fat, Weight),2))
+paste("Correlation for Body_Fat and Weight ", round(cor(Body_fat, Weight),2))
 
 windows(20,10)
 par(mfrow = c(3, 2)) # divide graph area in 3 rows by 2 columns
@@ -208,3 +208,20 @@ shapiro.test(normalised_chest_circumference)
 ##Modify the variable Age
 data$chest_circum_new <- normalised_chest_circumference
 shapiro.test(data$chest_circum_new)
+
+
+# Fit the full model
+model <- lm(Body_fat ~ Age + Chest_circumference + Density + Knee_circumference + Weight, data = data)
+
+# Summary of the full model
+summary(model)
+vif(model)
+# Residuals analysis
+windows(20,12)
+par(mfrow = c(2, 2))
+plot(model)
+
+# Shapiro-Wilk test for normality of residuals
+shapiro.test(residuals(model))
+AIC(model)
+BIC(model)
